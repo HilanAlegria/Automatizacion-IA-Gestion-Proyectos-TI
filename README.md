@@ -6,11 +6,11 @@
 ![Logo SinergIA](https://github.com/user-attachments/assets/1fd57963-b3c8-4285-9b44-26956c4b716e)
 
 # Integrantes:
-#### * Hilan Eduardo Alegria Yate
-#### * Raul Guillermo Orobio Ospina
-#### * William Andres Maltes Leon
-#### * Harold Daniel Zuñiga Samboni
-#### * Mario Guerrero Castillo
+#### Hilan Eduardo Alegria Yate
+#### Raul Guillermo Orobio Ospina
+#### William Andres Maltes Leon
+#### Harold Daniel Zuñiga Samboni
+#### Mario Guerrero Castillo
 
 # Roles del equipo: 
 
