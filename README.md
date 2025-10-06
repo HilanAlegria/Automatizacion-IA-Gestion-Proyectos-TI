@@ -11,7 +11,6 @@
 #### * William Andres Maltes Leon
 #### * Harold Daniel Zuñiga Samboni
 #### * Mario Guerrero Castillo
-#### * Juan Sebastian Toro Rodriguez
 --
 # Roles del equipo: 
 
@@ -19,8 +18,7 @@
 #### Raul: Planeador 
 #### William: Cierre - Operdador
 #### Daniel: Diseñador 
-#### Mario: Monitoreo - Tester
-#### Sebastian: Ejecutor - Desarrollador
+#### Mario: Monitoreo - Tester - Desarrollador
 --
 
 # Prompt utilizado
@@ -75,7 +73,7 @@ Formato de respuesta esperado:
 	•	Uso de tablas, diagramas y ejemplos prácticos.
 	•	Referencias académicas y normativas actualizadas (IEEE, ISO, PMI, bibliografía de ingeniería de software).
 	•	Aplicación explícita de criterios de evaluación por rúbrica en cada entregable. * 
---
+
 
 # IA (Inteligencia articial utilizada)
 #### * chatgtp (https://chatgpt.com/?model=auto)
