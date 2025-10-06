@@ -2,7 +2,7 @@
 # Empresa: Megadeth
 # proyecto: Sinerg IA
 ## Trabajo grupal de automatización con IA de Gestión de Proyectos TI
---
+
 ![Logo SinergIA](https://github.com/user-attachments/assets/1fd57963-b3c8-4285-9b44-26956c4b716e)
 
 # Integrantes:
@@ -11,7 +11,7 @@
 #### * William Andres Maltes Leon
 #### * Harold Daniel Zuñiga Samboni
 #### * Mario Guerrero Castillo
---
+
 # Roles del equipo: 
 
 #### Hilan: Inicio - Analista
@@ -19,7 +19,7 @@
 #### William: Cierre - Operdador
 #### Daniel: Diseñador 
 #### Mario: Monitoreo - Tester - Desarrollador
---
+
 
 # Prompt utilizado
 Prompt Maestro Final – Proyecto Gestión de Proyectos TI
