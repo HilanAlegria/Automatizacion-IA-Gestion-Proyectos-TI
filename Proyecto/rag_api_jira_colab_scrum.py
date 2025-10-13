@@ -13,7 +13,7 @@ Original file is located at
 pip install -U langchain langchain-community langchain-core langchain-chroma langchain-huggingface pypdf python-dotenv sentence-transformers llama-cpp-python deep-translator jira
 
 from google.colab import drive
-drive.mount('drive/my-drive/Lexi-Llama-3-8B-Uncensored_Q4_K_M.gguf')
+drive.mount('/content/drive')
 
 import os
 import re
