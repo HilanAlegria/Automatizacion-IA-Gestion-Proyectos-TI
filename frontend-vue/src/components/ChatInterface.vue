@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       prompt: '',
-      userId: 'user-pmbok-id',
+      userId: 'user-pmbok-id', 
       messages: [
         { type: 'bot', text: 'Hola, soy SinergIA. ¿En qué tarea de automatización puedo ayudarte hoy? (Ej: crear tarea, analizar riesgo).' }
       ],

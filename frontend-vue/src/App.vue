@@ -5,7 +5,7 @@
   </header>
   <main>
     <ChatInterface />
-    </main>
+  </main>
 </template>
 
 <script>

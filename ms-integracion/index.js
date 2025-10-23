@@ -1,6 +1,10 @@
-import express from 'express';
-import cors from 'cors';
-import { Secrets } from './src/infra/config/secrets.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const express = require('express');
+const cors = require('cors');
+
+import { Secrets } from './src/infra/config/secrets.js'; 
 
 const app = express();
 const PORT = process.env.INTEGRATION_PORT || 3001;
@@ -21,7 +25,7 @@ try {
     Secrets.getGeminiKey(); 
     
     app.listen(PORT, () => {
-        console.log(`🔗 MS-Integración corriendo en http://localhost:${PORT}`);
+        console.log(`MS-Integración corriendo en http://localhost:${PORT}`);
         console.log("Adaptadores listos: Gemini, Jira, ServiceNow.");
     });
 } catch (error) {

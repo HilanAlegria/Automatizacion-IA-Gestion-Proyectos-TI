@@ -1,14 +1,26 @@
+
 import express from 'express';
-import { ReportController } from '../infra/http/ReportController';
-import { MongoMetricRepository } from '../infra/repositories/MongoMetricRepository';
+// import { MetricsController } from '../infra/http/MetricsController'; 
+// import { MetricsService } from '../application/MetricsService'; 
 
 const router = express.Router();
 
-const metricRepository = new MongoMetricRepository();
-const reportController = ReportController(metricRepository);
+/**
+ * @route
+ * @description
+ */
+router.get('/status', (req, res) => {
 
-router.get('/psp/summary/:developerId', reportController.getPSPSummary);
-router.post('/log/time', reportController.logTime);
-router.post('/log/defect', reportController.logDefect);
+    res.status(200).json({ 
+        status: 'OK', 
+        service: 'MS-Métricas',
+        message: "Métricas API Router activo. Listo para lógica de PSP/PMBOK."
+    });
+});
+
+// Aquí irán las rutas para:
+// router.post('/log-entry', ...); // Registrar una métrica
+// router.get('/psp-report', ...); // Obtener un reporte PSP
+// router.get('/pmbok-progress', ...); // Obtener avance PMBOK
 
 export default router;
