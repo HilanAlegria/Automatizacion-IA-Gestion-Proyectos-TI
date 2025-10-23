@@ -1,1 +1,1 @@
-# i dont know how to use git for this
+# SinergIA
