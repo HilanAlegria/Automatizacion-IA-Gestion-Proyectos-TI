@@ -1,3 +1,4 @@
+
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
@@ -6,11 +7,17 @@ const cors = require('cors');
 
 import { Secrets } from './src/infra/config/secrets.js'; 
 
+import jiraRoutes from './src/routes/jira.routes.js'; 
+import geminiRoutes from './src/routes/gemini.routes.js'; 
+
 const app = express();
 const PORT = process.env.INTEGRATION_PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/api/v1/jira', jiraRoutes);
+app.use('/api/v1/gemini', geminiRoutes);
 
 app.get('/status', (req, res) => {
     res.json({ 

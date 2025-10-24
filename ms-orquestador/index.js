@@ -1,10 +1,11 @@
 
-
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
 const express = require('express');
 const cors = require('cors');
+
+import { IntegrationService } from './src/infra/integrations/IntegrationService.js'; 
 
 const app = express();
 const PORT = process.env.ORCHESTRATOR_PORT || 3000; 
@@ -29,14 +30,25 @@ app.post('/api/v1/automate', async (req, res) => {
 
     console.log(`[ORQUESTADOR] Recibida solicitud de ${userId}: "${prompt}"`);
 
-    const jiraKey = `SINERGIA-${Math.floor(Math.random() * 1000) + 100}`;
-    const jiraUrl = `https://sinergia-demo.atlassian.net/browse/${jiraKey}`;
+    try {
+        const structuredTask = await IntegrationService.analyzePrompt(prompt);
+        console.log('[ORQ] Tarea estructurada por IA:', structuredTask);
+        
+        const jiraResult = await IntegrationService.createJiraIssue(structuredTask);
+        console.log('[ORQ] Tarea creada en Jira:', jiraResult.jiraKey);
 
-    res.status(200).json({ 
-        message: `🤖 Tarea creada con éxito mediante IA: La solicitud "${prompt}" fue procesada y se registró en Jira.`, 
-        jiraKey: jiraKey,
-        jiraUrl: jiraUrl 
-    });
+        res.status(200).json({ 
+            message: `Tarea creada y registrada en Jira. La IA identificó la solicitud como: ${structuredTask.summary}.`, 
+            jiraKey: jiraResult.jiraKey,
+            jiraUrl: jiraResult.jiraUrl 
+        });
+
+    } catch (error) {
+        console.error("[ORQ ERROR] Fallo en la orquestación. Asegure que el MS-Integración esté 100% activo.", error.message);
+        res.status(500).json({ 
+            message: "Error en el flujo de automatización. Verifique la consola del MS-Orquestador y el MS-Integración." 
+        });
+    }
 });
 
 app.listen(PORT, () => {
