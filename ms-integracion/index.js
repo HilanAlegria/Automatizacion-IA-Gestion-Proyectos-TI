@@ -2,6 +2,9 @@
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 const express = require('express');
 const cors = require('cors');
 

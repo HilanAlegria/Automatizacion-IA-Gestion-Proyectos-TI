@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { GeminiAPIAdapter } from '../infra/adapters/GeminiAPIAdapter.js';
+import { GeminiAPIAdapter } from '../infra/adapters/GeminiAPIAdapter.js'; 
 const router = express.Router();
 
 router.post('/analyze', async (req, res) => {
@@ -14,7 +14,11 @@ router.post('/analyze', async (req, res) => {
 
     } catch (error) {
         console.error("Error en el análisis de Gemini:", error.message);
-        res.status(500).json({ message: error.message });
+        
+        res.status(500).json({ 
+            message: "Fallo en el servicio Gemini.",
+            details: error.message 
+        });
     }
 });
 
