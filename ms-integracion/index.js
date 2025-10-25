@@ -1,4 +1,5 @@
 
+
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
@@ -14,7 +15,7 @@ import jiraRoutes from './src/routes/jira.routes.js';
 import geminiRoutes from './src/routes/gemini.routes.js'; 
 
 const app = express();
-const PORT = process.env.INTEGRATION_PORT || 3001;
+const PORT = Secrets.getIntegrationPort(); 
 
 app.use(cors());
 app.use(express.json());
@@ -27,12 +28,12 @@ app.get('/status', (req, res) => {
         status: 'OK', 
         service: 'MS-Integracion', 
         message: 'Adaptadores listos para el Orquestador.',
-        configReady: !!Secrets.getGeminiKey()
+        configReady: !!Secrets.getGeminiApiKey() 
     });
 });
 
 try {
-    Secrets.getGeminiKey(); 
+    Secrets.getGeminiApiKey(); 
     
     app.listen(PORT, () => {
         console.log(`MS-Integración corriendo en http://localhost:${PORT}`);
