@@ -16,6 +16,7 @@ function initializeGeminiClient() {
         
         try {
             const saPath = Secrets.getGeminiServiceAccountPath(); 
+            console.log("error here?")
             const apiKey = Secrets.getGeminiApiKey(); 
 
             if (saPath) {
