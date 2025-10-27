@@ -1,7 +1,6 @@
-
-
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Secrets } from '../config/secrets.js'; 
+import { Secrets } from '../config/secrets.js';
+import { GoogleGenAI } from '@google/genai';
 
 /** @type {GoogleGenerativeAI | null} */
 let aiInstance = null;
@@ -13,35 +12,25 @@ let aiInstance = null;
 function initializeGeminiClient() {
     if (aiInstance === null) {
         let authMethod = "API Key";
-        
+
         try {
-            const saPath = Secrets.getGeminiServiceAccountPath(); 
-            console.log("error here?")
-            const apiKey = Secrets.getGeminiApiKey(); 
+            const saPath = Secrets.getGeminiServiceAccountPath();
+            let apiKey = Secrets.getGeminiApiKey();
 
-            if (saPath) {
-                 process.env.GOOGLE_APPLICATION_CREDENTIALS = saPath;
-                 aiInstance = new GoogleGenerativeAI({}); 
-                 authMethod = "Cuenta de Servicio (ADC)";
-                 
-            } 
-            else if (apiKey) {
-                 aiInstance = new GoogleGenerativeAI(apiKey);
-                 authMethod = "API Key";
-            } else {
-                 throw new Error("CRITICO: Falta GEMINI_API_KEY en .env y el archivo de Cuenta de Servicio no fue encontrado.");
-            }
-            
-            if (!aiInstance.models || typeof aiInstance.models.generateContent !== 'function') {
-                 throw new Error(`El cliente de GoogleGenerativeAI no se pudo construir. Las credenciales de ${authMethod} son inválidas.`);
+            if (!apiKey) {
+                throw new Error('Gestion de ti es una mierda');
             }
 
+            aiInstance = new GoogleGenerativeAI(apiKey);
+            if (typeof aiInstance.getGenerativeModel !== 'function') {
+                throw new Error(`El cliente de GoogleGenerativeAI no se pudo construir. Las credenciales de ${authMethod} son inválidas.`);
+            }
             console.log(`[INT:G] Cliente Gemini inicializado con éxito usando: ${authMethod}.`);
 
         } catch (error) {
             const errorMsg = `Fallo de inicialización de Gemini con ${authMethod}. Detalle: ${error.message}`;
             console.error(errorMsg);
-            
+
             aiInstance = { models: { generateContent: () => { throw new Error(errorMsg); } } };
             throw new Error(errorMsg);
         }
@@ -60,16 +49,17 @@ export const GeminiAPIAdapter = {
         if (!prompt) {
             throw new Error("El prompt no puede estar vacío.");
         }
-        
+
         try {
-            const ai = initializeGeminiClient(); 
-            
+            //const ai = initializeGeminiClient();
+
+            const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
             const response = await ai.models.generateContent({
-                 model: 'gemini-2.5-flash',
-                 contents: [
+                model: 'gemini-2.5-flash',
+                contents: [
                     { role: "user", parts: [{ text: prompt }] },
-                 ],
-                 config: {
+                ],
+                config: {
                     responseMimeType: "application/json",
                     responseSchema: {
                         type: "object",
@@ -82,10 +72,12 @@ export const GeminiAPIAdapter = {
                         },
                         required: ["summary", "description", "priority", "issueType", "projectKey"]
                     }
-                 }
+                }
             });
 
-            return JSON.parse(response.text.trim());
+            const text =  response.text;
+            console.log(text);
+            return JSON.parse(text);
 
         } catch (error) {
             console.error("Error en la llamada a Gemini:", error.message);

@@ -18,8 +18,7 @@ function initializeJiraCredentials() {
         const JIRA_USER_EMAIL = Secrets.getJiraEmail(); 
         const JIRA_API_TOKEN = Secrets.getJiraToken(); 
         
-        JIRA_BASE_URL = Secrets.getJiraBaseUrl(); 
-
+        JIRA_BASE_URL = Secrets.getJiraCloudUrl();
         AUTH_HEADER = Buffer.from(`${JIRA_USER_EMAIL}:${JIRA_API_TOKEN}`).toString('base64');
         
         console.log("[INT:J] Credenciales de Jira cargadas con éxito.");
@@ -47,7 +46,7 @@ export const JiraRestAdapter = {
 
         const issueData = {
             fields: {
-                project: { key: taskDetails.projectKey },
+                project: { key: taskDetails.projectKey ||  'KAN' },
                 summary: taskDetails.summary,
                 description: {
                     type: "doc",
@@ -62,7 +61,10 @@ export const JiraRestAdapter = {
         };
 
         try {
-            const response = await axios.post(JIRA_BASE_URL, issueData, {
+//            console.log(AUTH_HEADER, ';asd')
+//IMPORTANTE PODER MANDAR DESDE EL CHAT SI ES UN ISSUE TAREA NORMAL O DEMAS Y CAMBIAR LA URL DEL ENDPOINT OSEA EL POST
+
+            const response = await axios.post(JIRA_BASE_URL + '/rest/api/3/issue', issueData, {
                 headers: {
                     'Authorization': `Basic ${AUTH_HEADER}`,
                     'Accept': 'application/json',
@@ -71,7 +73,7 @@ export const JiraRestAdapter = {
             });
 
             const jiraKey = response.data.key;
-            const cloudUrl = Secrets.getJiraBaseUrl().split('/rest/api')[0];
+            const cloudUrl = Secrets.getJiraCloudUrl().split('/rest/api/3/issue')[0];
             
             return {
                 jiraKey: jiraKey,

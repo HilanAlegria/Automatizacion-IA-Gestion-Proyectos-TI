@@ -19,7 +19,7 @@ export default {
 }
 </script>
 
-<style>
+<style >
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f7f6;

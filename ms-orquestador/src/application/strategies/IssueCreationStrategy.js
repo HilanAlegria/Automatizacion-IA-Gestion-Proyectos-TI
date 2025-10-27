@@ -1,5 +1,5 @@
 import { IAutomationStrategy } from "../../domain/ports/IAutomationStrategy";
-import { GeminiAdapter } from "../../../ms-integracion/src/infra/adapters/GeminiAPIAdapter"; 
+import { GeminiAdapter } from "../../../../ms-integracion/src/infra/adapters/GeminiAPIAdapter"; 
 import { JiraRestAdapter } from "../../../ms-integracion/src/infra/adapters/JiraRestAdapter";
 import { ServiceNowAdapter } from "../../../ms-integracion/src/infra/adapters/ServiceNowAdapter";
 
@@ -27,7 +27,7 @@ export class IssueCreationStrategy extends IAutomationStrategy {
         const args = functionCallResult.args;
 
         const issueData = {
-            projectKey: args.projectKey || 'SINERGIA',
+            projectKey: args.projectKey || 'KAN',
             title: args.title || 'Tarea automatizada sin título',
             description: `${args.description} (Solicitado por: ${userProfile.name})`,
             riskLevel: args.riskLevel || 'Medio',
@@ -36,6 +36,7 @@ export class IssueCreationStrategy extends IAutomationStrategy {
 
         const jiraResult = await this.jiraAdapter.createIssueWithRisk(issueData);
 
+        console.log('jira', jiraResult)
         return {
             message: `Tarea automatizada creada por ${userProfile.name}: ${jiraResult.key}.`,
             jiraUrl: jiraResult.url,

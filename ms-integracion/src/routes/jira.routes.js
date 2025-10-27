@@ -5,16 +5,18 @@ const router = express.Router();
 
 router.post('/issue', async (req, res) => {
     const taskDetails = req.body;
-    
+
     try {
-        const jiraResult = await JiraRestAdapter.createIssue(taskDetails); 
-        
-        console.log(`[INT:J] Tarea de tipo '${taskDetails.issueType}' creada con éxito: ${jiraResult.jiraKey}`);
+        const jiraResult = await JiraRestAdapter.createIssue(taskDetails);
+
 
         res.json({
             jiraKey: jiraResult.jiraKey,
             jiraUrl: jiraResult.jiraUrl
         });
+
+        console.log(`[INT:J] Tarea de tipo '${taskDetails.issueType}' creada con éxito: ${jiraResult.jiraKey}`);
+
 
     } catch (error) {
         console.error("Error al crear tarea en Jira:", error.message);
