@@ -12,22 +12,33 @@ let aiInstance = null;
  */
 function initializeGeminiClient() {
     if (aiInstance === null) {
+        let authMethod = "API Key";
+        
         try {
+            const saPath = Secrets.getGeminiServiceAccountPath(); 
             const apiKey = Secrets.getGeminiApiKey(); 
 
-            if (!apiKey) {
-                throw new Error("CRITICO: GEMINI_API_KEY está vacía en .env.");
+            if (saPath) {
+                 process.env.GOOGLE_APPLICATION_CREDENTIALS = saPath;
+                 aiInstance = new GoogleGenerativeAI({}); 
+                 authMethod = "Cuenta de Servicio (ADC)";
+                 
+            } 
+            else if (apiKey) {
+                 aiInstance = new GoogleGenerativeAI(apiKey);
+                 authMethod = "API Key";
+            } else {
+                 throw new Error("CRITICO: Falta GEMINI_API_KEY en .env y el archivo de Cuenta de Servicio no fue encontrado.");
             }
-
-            aiInstance = new GoogleGenerativeAI(apiKey); 
             
             if (!aiInstance.models || typeof aiInstance.models.generateContent !== 'function') {
-                 throw new Error("El cliente de GoogleGenerativeAI no se pudo construir. (Clave API rechazada o API no habilitada).");
+                 throw new Error(`El cliente de GoogleGenerativeAI no se pudo construir. Las credenciales de ${authMethod} son inválidas.`);
             }
 
-            console.log("[INT:G] Cliente Gemini inicializado con éxito.");
+            console.log(`[INT:G] Cliente Gemini inicializado con éxito usando: ${authMethod}.`);
+
         } catch (error) {
-            const errorMsg = `Fallo de inicialización de Gemini. Verifique si la clave en .env es válida y el servicio 'Generative Language API' está habilitado en Google Cloud. Detalle: ${error.message}`;
+            const errorMsg = `Fallo de inicialización de Gemini con ${authMethod}. Detalle: ${error.message}`;
             console.error(errorMsg);
             
             aiInstance = { models: { generateContent: () => { throw new Error(errorMsg); } } };
@@ -76,9 +87,8 @@ export const GeminiAPIAdapter = {
             return JSON.parse(response.text.trim());
 
         } catch (error) {
-            const keyError = error.message.includes("Fallo de inicialización de Gemini") ? "" : " (El cliente Gemini se inicializó, pero la llamada API falló).";
             console.error("Error en la llamada a Gemini:", error.message);
-            throw new Error(`Error en el análisis de Gemini: ${error.message}${keyError}.`);
+            throw new Error(`Error en el análisis de Gemini: ${error.message}.`);
         }
     }
 };

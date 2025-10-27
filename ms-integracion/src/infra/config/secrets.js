@@ -1,13 +1,24 @@
 
+
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+import path from 'path'; 
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 function getGeminiApiKey() {
-    const key = process.env.GEMINI_API_KEY;
-    if (!key) {
-        console.error("CRITICO: GEMINI_API_KEY no definida en el archivo .env.");
-    }
-    return key;
+    return process.env.GEMINI_API_KEY;
+}
+
+function getGeminiServiceAccountPath() {
+    const filename = 'gemini-service-account.json';
+    
+    const absolutePath = path.resolve(__dirname, '..', '..', filename);
+    return absolutePath;
 }
 
 function getJiraEmail() {
@@ -20,7 +31,7 @@ function getJiraToken() {
 
 function getJiraCloudUrl() {
     const url = process.env.JIRA_CLOUD_URL;
-    if (!url) throw new Error("CRITICO: JIRA_CLOUD_URL no definida en el archivo .env. Usar formato https://tudominio.atlassian.net");
+    if (!url) throw new Error("CRITICO: JIRA_CLOUD_URL no definida.");
     return url;
 }
 
@@ -32,8 +43,10 @@ function getIntegrationPort() {
     return process.env.INTEGRATION_PORT ? parseInt(process.env.INTEGRATION_PORT) : 3001;
 }
 
+
 export const Secrets = {
     getGeminiApiKey,
+    getGeminiServiceAccountPath,
     getJiraEmail,
     getJiraToken,
     getJiraCloudUrl,
